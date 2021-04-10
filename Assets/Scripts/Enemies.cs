@@ -23,24 +23,32 @@ public class Enemies : MonoBehaviour
     private GameObject _shotgun;
     
     private GameObject _wallHit;
-   
-    private bool _hitWall = false;
+
+    [SerializeField] 
+    private float _speed = 1f;
+
+    [SerializeField] 
+    private int _powerUpTime = 7;
+    
+    
     // Update is called once per frame
     void Update()
     {
-        if (_hitWall)
+
+        if (GameObject.Find("Player") != null || transform.position == Vector3.MoveTowards(transform.position,
+                GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, _speed * Time.deltaTime))
         {
-            //Enemies will move away from the wall
-            transform.position = Vector3.MoveTowards(transform.position, _wallHit.gameObject.transform.position, -10f * Time.deltaTime);
+            //Enemies will move towards and rotate the player
+            Vector3 newDirection = Vector3.RotateTowards(transform.position,
+                GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, _speed * Time.deltaTime,0f);
+            transform.rotation = Quaternion.LookRotation(newDirection);
+            transform.position = Vector3.MoveTowards(transform.position,
+                GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, _speed * Time.deltaTime);
         }
-        else
+        //if the Enemies move outside of the screen, they'll be destroyed
+        if (transform.position.y > 6.7 || transform.position.y < -4.7f || transform.position.x > 5.7f || transform.position.x < -5.7f)
         {
-            if (GameObject.Find("Player") != null)
-            {
-                //Enemies will move towards the player
-                transform.position = Vector3.MoveTowards(transform.position,
-                    GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, 2f * Time.deltaTime);
-            }
+            Destroy(this.gameObject);
         }
 
     }
@@ -59,52 +67,62 @@ public class Enemies : MonoBehaviour
             GameObject.FindWithTag("Player").GetComponent<Player>().Count();
             Destroy(other.gameObject);
             Destroy(this.gameObject);
-            //After destruction of an Enieme possible Power-Ips can be instantiated
-            StartCoroutine(Power_Ups());
+            //After destruction of an Enemy possible Power-Ups can be instantiated
+            Power_Ups();
         }
-        //if Enemies "hit" a wall the bool will be activated to move away from the wall
+    }
+    void OnTriggerStay(Collider other)
+    {
+        //Enemies will rotate around each other while they are triggered
+        if (other.CompareTag("Enemies"))
+        {
+            this.transform.RotateAround(other.gameObject.transform.position, Vector3.right, 25 * Time.deltaTime);
+        }
+        //Enemies will rotate around wall while they are triggered
         else if (other.CompareTag("Wall"))
         {
-            _hitWall = true;
             _wallHit = other.gameObject;
+            this.transform.RotateAround(_wallHit.gameObject.transform.position, Vector3.right, 25 * Time.deltaTime);
         }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        //if Enemies don't "hit" the wall anymore, the enemies will move towards the player again
-        if (other.CompareTag("Wall"))
-        {
-            _hitWall = false;
-        }
-    }
-    private IEnumerator Power_Ups()
-    {
-        //after each start a random number will be generated
-        int number = UnityEngine.Random.Range(0, 30);
-        //if the number is a 6 or 7, a coin will be instantiated
-        if (number > 20)
-        {
-            Instantiate(_coin, transform.position, Quaternion.identity);
-        } else if (number == 8)
-        {
-            Instantiate(_bag, transform.position, Quaternion.identity);
-        } else if (number == 9)
-        {
-            Instantiate(_coffee, transform.position, Quaternion.identity);
-        } else if (number == 1)
-        {
-            Instantiate(_life, transform.position, Quaternion.identity);
-        } else if (number == 2)
-        {
-            Instantiate(_bomb, transform.position, Quaternion.identity);
-        } else if (number == 3)
-        {
-            Instantiate(_shotgun, transform.position, Quaternion.identity);
-        }
-        //else nothing happens
-        yield return null;
     }
     
-
+    void Power_Ups()
+    {
+        //after each start a random number will be generated
+        int number = UnityEngine.Random.Range(0, 50);
+        
+        // for different numbers, different power ups will be instantiated
+        // if the power ups won't be collected, they will be destroyed after time
+        if (number > 42)
+        {
+            _coin = (GameObject) Instantiate(_coin, transform.position, Quaternion.identity);
+            Destroy(_coin.gameObject,_powerUpTime);
+        } 
+        else if (number < 5)
+        {
+            _bag = (GameObject) Instantiate(_bag, transform.position, Quaternion.identity);
+            Destroy(_bag.gameObject,_powerUpTime);
+        } 
+        else if (number == 8 || number == 14)
+        {
+            _coffee = (GameObject) Instantiate(_coffee, transform.position, Quaternion.identity);
+            Destroy(_coffee.gameObject,_powerUpTime);
+        } 
+        else if (number == 12 || number == 13)
+        {
+            _life = (GameObject) Instantiate(_life, transform.position, Quaternion.identity);
+            Destroy(_life.gameObject,_powerUpTime);
+        } 
+        else if (number == 7)
+        {
+            _bomb = (GameObject) Instantiate(_bomb, transform.position, Quaternion.identity);
+            Destroy(_bomb.gameObject,_powerUpTime);
+        } 
+        else if (number == 9 || number == 10 || number == 11)
+        {
+            _shotgun = (GameObject) Instantiate(_shotgun, transform.position, Quaternion.identity);
+            Destroy(_shotgun.gameObject,_powerUpTime);
+        }
+        
+    }
 }

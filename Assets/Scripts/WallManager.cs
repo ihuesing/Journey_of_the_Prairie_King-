@@ -15,7 +15,7 @@ public class WallManager : MonoBehaviour
 
     public IEnumerator Wall()
     {
-        if (_player._level_1 == true)
+        if (_player.level_1 == true)
         {
             //all wall elements are instantiated at a fixed position
             Instantiate(_wall, new Vector3(-4, -1f, 0), Quaternion.identity, this.transform);
@@ -31,7 +31,7 @@ public class WallManager : MonoBehaviour
             Instantiate(_wall, new Vector3(4, 3.8f, 0), Quaternion.identity, this.transform);
             Instantiate(_wall, new Vector3(3.2f, 3.8f, 0), Quaternion.identity, this.transform);
         }
-        else if (_player._level_2 == true)
+        else if (_player.level_2 == true)
         {
             //all wall elements are instantiated at a fixed position
             Instantiate(_wall, new Vector3(-4, 1, 0), Quaternion.identity, this.transform);
@@ -39,7 +39,7 @@ public class WallManager : MonoBehaviour
             Instantiate(_wall, new Vector3(0, -2, 0), Quaternion.identity, this.transform);
             Instantiate(_wall, new Vector3(0, 4f, 0), Quaternion.identity, this.transform);
         }
-        else if (_player._level_3 == true)
+        else if (_player.level_3 == true)
         {
             //all wall elements are instantiated at a fixed position
             Instantiate(_wall, new Vector3(-4, -0.2f, 0), Quaternion.identity, this.transform);
