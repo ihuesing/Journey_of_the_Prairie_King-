@@ -46,7 +46,7 @@ public class Enemies : MonoBehaviour
                 GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, _speed * Time.deltaTime);
         }
         //if the Enemies move outside of the screen, they'll be destroyed
-        if (transform.position.y > 6.2f || transform.position.y < -5.4f || transform.position.x > 10.2f || transform.position.x < -10.2f)
+        if (transform.position.y > 6.7 || transform.position.y < -4.7f || transform.position.x > 5.7f || transform.position.x < -5.7f)
         {
             Destroy(this.gameObject);
         }

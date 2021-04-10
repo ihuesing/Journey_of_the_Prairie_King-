@@ -177,9 +177,9 @@ public class Player : MonoBehaviour
                 Destroy(child.gameObject);
             }
             Destroy(this.gameObject);
-            StartCoroutine(_uiManager.GameOver());
+            _uiManager.StartCoroutine(_uiManager.GameOver());
 
-            _highscoreTable.MakeScoreboard(score);
+            _uiManager.StartCoroutine(_highscoreTable.MakeScoreboard(score));
         }
     }
     
@@ -261,28 +261,28 @@ public class Player : MonoBehaviour
     void TransitionInBounds()
     {
         //Player is not allowed to leave the screen through either ot these sides
-        if (transform.position.y < -5.2f)
+        if (transform.position.y < -4.3f)
         {
-            transform.position = new Vector3(transform.position.x, -5.2f, 0f);
+            transform.position = new Vector3(transform.position.x, -4.3f, 0f);
         }      
-        else if (transform.position.y > 6f)
+        else if (transform.position.y > 6.3f)
         {
-            transform.position = new Vector3(transform.position.x, 6f, 0f);
+            transform.position = new Vector3(transform.position.x, 6.3f, 0f);
         }
 
-        else if (transform.position.x > 10f)
+        else if (transform.position.x > 5.3f)
         {
-            transform.position = new Vector3(10f, transform.position.y, 0f);
+            transform.position = new Vector3(5.3f, transform.position.y, 0f);
         }
-        else if (transform.position.x < -10f)
+        else if (transform.position.x < -5.3f)
         {
-            transform.position = new Vector3(-10f, transform.position.y, 0f);
+            transform.position = new Vector3(-5.3f, transform.position.y, 0f);
         }
     }
     void TransitionNextLevel()
     {
         //dependent on the amount of destroyed Enemies, the player is allowed to leave the bottom screen if the next level is activated
-        if (nextLevel == true && transform.position.y < -5.2f && transform.position.x < 1.5f && transform.position.x > -1.5f)
+        if (nextLevel == true && transform.position.y < -4.3f && transform.position.x < 1.5f && transform.position.x > -1.5f)
         {
             //if the Player transition into the next level, the next level will be set as true and points are added to the next score
             if (level_0 == true)
@@ -305,7 +305,7 @@ public class Player : MonoBehaviour
             }
             //the arrow disappears again
             _arrow.SetActive(false);
-            transform.position = new Vector3(transform.position.x, 6, 0f);
+            transform.position = new Vector3(transform.position.x, 6.3f, 0f);
             //the player cannot move on to the next level without finishing the current one
             nextLevel = false;
             _theGo = false;
