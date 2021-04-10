@@ -7,7 +7,7 @@ using UnityEngine.UI;
 
 public class UIManager : MonoBehaviour
 {
-    private int _coins = 0;
+    public int _coins = 0;
     private int _score = 0;
     
     public static int lives = 3;
@@ -24,6 +24,8 @@ public class UIManager : MonoBehaviour
     [SerializeField]
     private TextMeshProUGUI _gameOverText;
 
+    [SerializeField] 
+    private Player _player;
     
 
     private void Start()
@@ -36,7 +38,7 @@ public class UIManager : MonoBehaviour
 
     private void Update()
     {
-        _score = _coins;
+        _score = _player.score;
         _scoreText.text = "Score:" + _score;
     }
 

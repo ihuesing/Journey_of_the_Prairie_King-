@@ -45,7 +45,7 @@ public class Player : MonoBehaviour
 
     //int to count all the destroyed Enemies
     public int _enemiesCount;
-    
+
     // bool to control if shotgun is active
     private bool _shotgun = false;
 
@@ -58,7 +58,14 @@ public class Player : MonoBehaviour
 
     //bool to control the collision between Player and Wall
     private bool _hitWall = false;
-    
+
+    [SerializeField] 
+    private HighscoreTable _highscoreTable;
+
+    // count the score
+    public int score;
+
+
     // Start is called before the first frame update
     void Start()
     {
@@ -85,6 +92,8 @@ public class Player : MonoBehaviour
         {
             _arrow.SetActive(true);
         }
+
+        score = (_enemiesCount * 20)+ (_uiManager._coins * 10);
     }
 
     
@@ -135,6 +144,7 @@ public class Player : MonoBehaviour
         //if the count exceeds a given limit the spawning of new Enemies will be stopped
         NextLevel();
     }
+    
     public void Damage()
     {
         //if an Enemie hits the Player, the Player will lose a live
@@ -153,8 +163,10 @@ public class Player : MonoBehaviour
             }
             Destroy(this.gameObject);
             _uiManager.GameOver();
+            
+            // store enemy count of the game and make leaderboard
+            _highscoreTable.MakeScoreboard(score);
         }
-
     }
     
     IEnumerator EnableSpeedBonus(int speed)

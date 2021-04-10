@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/contentModel.xml
+/.idea.KotP_Basics_powerUps.iml
+/modules.xml
+/projectSettingsUpdater.xml
+# Datasource local storage ignored files
+/../../../../../../../../../../../../:\Users\Paula\Documents\Uni\2020-21 WS\Introduction to Unity\KotP_Basics_powerUps\KotP_Basics_powerUps\.idea\.idea.KotP_Basics_powerUps\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
