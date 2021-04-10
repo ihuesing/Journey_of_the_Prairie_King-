@@ -26,6 +26,11 @@ public class Enemies : MonoBehaviour
 
     [SerializeField] 
     private float _speed = 1f;
+
+    [SerializeField] 
+    private int _powerUpTime = 7;
+    
+    
     // Update is called once per frame
     void Update()
     {
@@ -62,8 +67,8 @@ public class Enemies : MonoBehaviour
             GameObject.FindWithTag("Player").GetComponent<Player>().Count();
             Destroy(other.gameObject);
             Destroy(this.gameObject);
-            //After destruction of an Enieme possible Power-Ups can be instantiated
-            StartCoroutine(Power_Ups());
+            //After destruction of an Enemy possible Power-Ups can be instantiated
+            Power_Ups();
         }
     }
     void OnTriggerStay(Collider other)
@@ -81,35 +86,43 @@ public class Enemies : MonoBehaviour
         }
     }
     
-    private IEnumerator Power_Ups()
+    void Power_Ups()
     {
         //after each start a random number will be generated
         int number = UnityEngine.Random.Range(0, 50);
+        
+        // for different numbers, different power ups will be instantiated
+        // if the power ups won't be collected, they will be destroyed after time
         if (number > 42)
         {
-            Instantiate(_coin, transform.position, Quaternion.identity);
+            _coin = (GameObject) Instantiate(_coin, transform.position, Quaternion.identity);
+            Destroy(_coin.gameObject,_powerUpTime);
         } 
         else if (number < 5)
         {
-            Instantiate(_bag, transform.position, Quaternion.identity);
+            _bag = (GameObject) Instantiate(_bag, transform.position, Quaternion.identity);
+            Destroy(_bag.gameObject,_powerUpTime);
         } 
         else if (number == 8 || number == 14)
         {
-            Instantiate(_coffee, transform.position, Quaternion.identity);
+            _coffee = (GameObject) Instantiate(_coffee, transform.position, Quaternion.identity);
+            Destroy(_coffee.gameObject,_powerUpTime);
         } 
         else if (number == 12 || number == 13)
         {
-            Instantiate(_life, transform.position, Quaternion.identity);
+            _life = (GameObject) Instantiate(_life, transform.position, Quaternion.identity);
+            Destroy(_life.gameObject,_powerUpTime);
         } 
         else if (number == 7)
         {
-            Instantiate(_bomb, transform.position, Quaternion.identity);
+            _bomb = (GameObject) Instantiate(_bomb, transform.position, Quaternion.identity);
+            Destroy(_bomb.gameObject,_powerUpTime);
         } 
         else if (number == 9 || number == 10 || number == 11)
         {
-            Instantiate(_shotgun, transform.position, Quaternion.identity);
+            _shotgun = (GameObject) Instantiate(_shotgun, transform.position, Quaternion.identity);
+            Destroy(_shotgun.gameObject,_powerUpTime);
         }
-        //else nothing happens
-        yield return null;
+        
     }
 }

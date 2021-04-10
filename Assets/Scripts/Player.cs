@@ -142,6 +142,7 @@ public class Player : MonoBehaviour
             _bullet._shootingDirection = new Vector3(horizontalShootInput, verticalShootInput, 0f);
             Instantiate(_bulletPrefab, transform.position, Quaternion.identity);
             
+            // if the shotgun power up is active, 2 additional bullets will be instantiated with different angles
             if (_shotgun)
             {
                 Instantiate(_bulletPrefab, transform.position, Quaternion.AngleAxis(30, Vector3.forward));
@@ -163,7 +164,7 @@ public class Player : MonoBehaviour
     
     public void Damage()
     {
-        //if an Enemie hits the Player, the Player will lose a live
+        //if an Enemy hits the Player, the Player will lose a live
         _uiManager.AddLife(-1);
 
         //if the Player has no lives left the Player and the remaining Enemies will be destroyed
@@ -203,14 +204,13 @@ public class Player : MonoBehaviour
     
     void OnTriggerEnter(Collider other)
     {
-       
+        // depending on the power up type, the corresponding functions will be executed and the power ups destroyed
         string type = other.tag;
         
         switch (type)
         {
             case "Coin":
                 RelayScore(1);
-                //coins++;
                 Destroy(other.gameObject);
                 break;
             
