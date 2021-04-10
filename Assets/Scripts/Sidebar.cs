@@ -29,6 +29,12 @@ public class Sidebar : MonoBehaviour
     [SerializeField] 
     private List<GameObject> _winnerList;
 
+    [SerializeField] 
+    private GameObject _move;
+
+    [SerializeField] 
+    private GameObject _shoot;
+
 
     public int lives = 3;
 
@@ -45,6 +51,8 @@ public class Sidebar : MonoBehaviour
             winnerText.gameObject.SetActive(false);
         }
         _playAgain.gameObject.SetActive(false);
+        _move.gameObject.SetActive(true);
+        _shoot.gameObject.SetActive(true);
     }
 
     // Update is called once per frame
@@ -52,6 +60,22 @@ public class Sidebar : MonoBehaviour
     {
         _scoreCounter.GetComponent<TextMeshPro>().text = _player.score.ToString();
         _livesCounter.transform.GetComponent<TextMeshPro>().text = "x " + lives;
+        
+        //check for input from movement or shooting keys
+        float horizontalMoveInput = Input.GetAxis("Horizontal");
+        float verticalMoveInput = Input.GetAxis(("Vertical"));
+        float horizontalShootInput = Input.GetAxis("Fire1");
+        float verticalShootInput = Input.GetAxis("Fire2");
+        
+        if (horizontalMoveInput != 0 || verticalMoveInput != 0)
+        {
+            _move.gameObject.SetActive(false);
+        }
+
+        if (horizontalShootInput != 0 || verticalShootInput != 0)
+        {
+            _shoot.gameObject.SetActive(false);
+        }
     }
     
     public void AddLife(int life)
@@ -88,6 +112,8 @@ public class Sidebar : MonoBehaviour
         yield return new WaitForSeconds(7);
         while (!Input.GetKeyDown(KeyCode.Space))
         {
+            _move.gameObject.SetActive(false);
+            _shoot.gameObject.SetActive(false);
             _playAgain.gameObject.SetActive(true);
             yield return null;
         }
