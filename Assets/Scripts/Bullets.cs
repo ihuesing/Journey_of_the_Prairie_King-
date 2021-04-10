@@ -21,7 +21,7 @@ public class Bullets : MonoBehaviour
         transform.Translate(_shootingDirection * _shootingSpeed * Time.deltaTime);
 
         //if the bullet is outside of the frame, it will be destroyed
-        if (transform.position.y > 6f || transform.position.y < -6f || transform.position.x > 10f || transform.position.x < -10f)
+        if (transform.position.y > 6f || transform.position.y < -5f || transform.position.x > 5.2f || transform.position.x < -5.2f)
         {
             Destroy(this.gameObject);
         }

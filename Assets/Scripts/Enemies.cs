@@ -39,11 +39,12 @@ public class Enemies : MonoBehaviour
                 GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, _speed * Time.deltaTime))
         {
             //Enemies will move towards and rotate the player
-            // Vector3 newDirection = Vector3.RotateTowards(transform.position,
-            //GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, _speed * Time.deltaTime, 0f);
-            //transform.rotation = Quaternion.LookRotation(newDirection);
             transform.position = Vector3.MoveTowards(transform.position,
                 GameObject.FindWithTag("Player").GetComponent<Player>().transform.position + new Vector3(0,0,-0.6f), _speed * Time.deltaTime);
+        }
+        if (transform.position.z > -0.6f)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, -0.6f);
         }
         //if the Enemies move outside of the screen, they'll be destroyed
         if (transform.position.y > 6.7 || transform.position.y < -4.7f || transform.position.x > 5.7f || transform.position.x < -5.7f)
@@ -76,14 +77,13 @@ public class Enemies : MonoBehaviour
         //Enemies will rotate around each other while they are triggered
         if (other.CompareTag("Enemies"))
         {
-            this.transform.RotateAround(other.gameObject.transform.position, Vector3.right, 25 * Time.deltaTime);
+            this.transform.position = Vector3.MoveTowards(this.transform.position, other.transform.position, -0.5f * Time.deltaTime);
         }
-        //Enemies will rotate around wall while they are triggered
+        //Enemies will move around wall while they are triggered
         else if (other.CompareTag("Wall"))
         {
             _wallHit = other.gameObject;
-            this. transform.position = Vector3.MoveTowards(this.transform.position, _wallHit.transform.position, -0.5f * Time.deltaTime);
-            //this.transform.RotateAround(_wallHit.gameObject.transform.position, Vector3.right, 25 * Time.deltaTime);
+            this.transform.position = Vector3.MoveTowards(this.transform.position, _wallHit.transform.position + new Vector3(0, 0, -0.6f), -5f * Time.deltaTime);
         }
     }
     
@@ -114,7 +114,7 @@ public class Enemies : MonoBehaviour
             _life = (GameObject) Instantiate(_life, transform.position + new Vector3(0, 0, 0.6f), Quaternion.identity);
             Destroy(_life.gameObject,_powerUpTime);
         } 
-        else if (number == 7 || number > 20 || number < 40)
+        else if (number == 7)
         {
             _bomb = (GameObject) Instantiate(_bomb, transform.position + new Vector3(0,0,0.35f), Quaternion.Euler(-30,0,90));
             Destroy(_bomb.gameObject,_powerUpTime);
