@@ -35,15 +35,15 @@ public class Enemies : MonoBehaviour
     void Update()
     {
 
-        if (GameObject.Find("Player") != null || transform.position == Vector3.MoveTowards(transform.position,
+        if (GameObject.Find("Player") != null || transform.position != Vector3.MoveTowards(transform.position,
                 GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, _speed * Time.deltaTime))
         {
             //Enemies will move towards and rotate the player
-            Vector3 newDirection = Vector3.RotateTowards(transform.position,
-                GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, _speed * Time.deltaTime,0f);
-            transform.rotation = Quaternion.LookRotation(newDirection);
+            // Vector3 newDirection = Vector3.RotateTowards(transform.position,
+            //GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, _speed * Time.deltaTime, 0f);
+            //transform.rotation = Quaternion.LookRotation(newDirection);
             transform.position = Vector3.MoveTowards(transform.position,
-                GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, _speed * Time.deltaTime);
+                GameObject.FindWithTag("Player").GetComponent<Player>().transform.position + new Vector3(0,0,-0.6f), _speed * Time.deltaTime);
         }
         //if the Enemies move outside of the screen, they'll be destroyed
         if (transform.position.y > 6.7 || transform.position.y < -4.7f || transform.position.x > 5.7f || transform.position.x < -5.7f)
@@ -82,7 +82,8 @@ public class Enemies : MonoBehaviour
         else if (other.CompareTag("Wall"))
         {
             _wallHit = other.gameObject;
-            this.transform.RotateAround(_wallHit.gameObject.transform.position, Vector3.right, 25 * Time.deltaTime);
+            this. transform.position = Vector3.MoveTowards(this.transform.position, _wallHit.transform.position, -0.5f * Time.deltaTime);
+            //this.transform.RotateAround(_wallHit.gameObject.transform.position, Vector3.right, 25 * Time.deltaTime);
         }
     }
     
@@ -95,32 +96,32 @@ public class Enemies : MonoBehaviour
         // if the power ups won't be collected, they will be destroyed after time
         if (number > 42)
         {
-            _coin = (GameObject) Instantiate(_coin, transform.position, Quaternion.identity);
+            _coin = (GameObject) Instantiate(_coin, transform.position + new Vector3(0, 0, 0.6f), Quaternion.identity);
             Destroy(_coin.gameObject,_powerUpTime);
         } 
         else if (number < 5)
         {
-            _bag = (GameObject) Instantiate(_bag, transform.position, Quaternion.identity);
+            _bag = (GameObject) Instantiate(_bag, transform.position + new Vector3(0, 0, 0.6f), Quaternion.identity);
             Destroy(_bag.gameObject,_powerUpTime);
         } 
         else if (number == 8 || number == 14)
         {
-            _coffee = (GameObject) Instantiate(_coffee, transform.position, Quaternion.identity);
+            _coffee = (GameObject) Instantiate(_coffee, transform.position + new Vector3(0, 0, 0.6f), Quaternion.Euler(-42f, 0,0));
             Destroy(_coffee.gameObject,_powerUpTime);
         } 
         else if (number == 12 || number == 13)
         {
-            _life = (GameObject) Instantiate(_life, transform.position, Quaternion.identity);
+            _life = (GameObject) Instantiate(_life, transform.position + new Vector3(0, 0, 0.6f), Quaternion.identity);
             Destroy(_life.gameObject,_powerUpTime);
         } 
-        else if (number == 7)
+        else if (number == 7 || number > 20 || number < 40)
         {
-            _bomb = (GameObject) Instantiate(_bomb, transform.position, Quaternion.identity);
+            _bomb = (GameObject) Instantiate(_bomb, transform.position + new Vector3(0,0,0.35f), Quaternion.Euler(-30,0,90));
             Destroy(_bomb.gameObject,_powerUpTime);
         } 
         else if (number == 9 || number == 10 || number == 11)
         {
-            _shotgun = (GameObject) Instantiate(_shotgun, transform.position, Quaternion.identity);
+            _shotgun = (GameObject) Instantiate(_shotgun, transform.position + new Vector3(0, 0, 0.6f), Quaternion.identity);
             Destroy(_shotgun.gameObject,_powerUpTime);
         }
         

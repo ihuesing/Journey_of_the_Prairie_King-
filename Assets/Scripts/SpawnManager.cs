@@ -7,6 +7,8 @@ public class SpawnManager : MonoBehaviour
     [SerializeField]
     private GameObject _enemiesPrefab;
 
+    private float z = -0.6f;
+
     //List for the position in which thr Enemies can be instantiated
     List<Vector3> PosBottom = new List<Vector3>();
     List<Vector3> PosTop = new List<Vector3>();
@@ -47,7 +49,7 @@ public class SpawnManager : MonoBehaviour
                     {
                         //The position is chosen randomly from one of the position of the given list
                         Vector3 Pos = PosBottom[Random.Range(0, PosBottom.Count)];
-                        Instantiate(_enemiesPrefab, Pos, Quaternion.identity, this.transform);
+                        Instantiate(_enemiesPrefab, Pos, Quaternion.Euler(0,178,1.5f), this.transform);
                         //The position is removed from list so it cannot be chosen twice
                         PosBottom.Remove(Pos);                       
                     }
@@ -60,7 +62,7 @@ public class SpawnManager : MonoBehaviour
                     for (int i = 0; i < amount; i++)
                     {
                         Vector3 Pos = PosRight[Random.Range(0, PosRight.Count)];
-                        Instantiate(_enemiesPrefab, Pos, Quaternion.identity, this.transform);
+                        Instantiate(_enemiesPrefab, Pos, Quaternion.Euler(0, 178, 1.5f), this.transform);
                         PosRight.Remove(Pos);
                     }
                     PosRight.Clear();
@@ -71,7 +73,7 @@ public class SpawnManager : MonoBehaviour
                     for (int i = 0; i < amount; i++)
                     {
                         Vector3 Pos = PosTop[Random.Range(0, PosTop.Count)];
-                        Instantiate(_enemiesPrefab, Pos, Quaternion.identity, this.transform);
+                        Instantiate(_enemiesPrefab, Pos, Quaternion.Euler(0, 178, 1.5f), this.transform);
                         PosTop.Remove(Pos);
                     }
                     PosTop.Clear();
@@ -82,7 +84,7 @@ public class SpawnManager : MonoBehaviour
                     for (int i = 0; i < amount; i++)
                     {
                         Vector3 Pos = PosLeft[Random.Range(0, PosLeft.Count)];
-                        Instantiate(_enemiesPrefab, Pos, Quaternion.identity, this.transform);
+                        Instantiate(_enemiesPrefab, Pos, Quaternion.Euler(0, 178, 1.5f), this.transform);
                         PosLeft.Remove(Pos);
                     }
                     PosLeft.Clear();
@@ -109,29 +111,29 @@ public class SpawnManager : MonoBehaviour
     private void PosBottomAdd()
     {
         //Entry Postions for the Enemies which will come fromm the bottom
-        PosBottom.Add(new Vector3(0.8f, -4.7f, 0f));
-        PosBottom.Add(new Vector3(0f, -4.7f, 0f));
-        PosBottom.Add(new Vector3(-0.8f, -4.7f, 0f));
+        PosBottom.Add(new Vector3(0.8f, -4.7f, z));
+        PosBottom.Add(new Vector3(0f, -4.7f, z));
+        PosBottom.Add(new Vector3(-0.8f, -4.7f, 7));
     }
     private void PosTopAdd()
     {
         //Entry Postions for the Enemies which will come fromm the top
-        PosTop.Add(new Vector3(0.7f, 6.7f, 0));
-        PosTop.Add(new Vector3(0f, 6.7f, 0));
-        PosTop.Add(new Vector3(-0.7f, 6.7f, 0));
+        PosTop.Add(new Vector3(0.7f, 6.7f, z));
+        PosTop.Add(new Vector3(0f, 6.7f, z));
+        PosTop.Add(new Vector3(-0.7f, 6.7f, z));
     }
     private void PosLeftAdd()
     {
         //Entry Postions for the Enemies which will come fromm the left
-        PosLeft.Add(new Vector3(-5.7f, 0.3f, 0));
-        PosLeft.Add(new Vector3(-5.7f, 1f, 0));
-        PosLeft.Add(new Vector3(-5.7f, 1.7f, 0));
+        PosLeft.Add(new Vector3(-5.7f, 0.3f, z));
+        PosLeft.Add(new Vector3(-5.7f, 1f,z));
+        PosLeft.Add(new Vector3(-5.7f, 1.7f, z));
     }
     private void PosRightAdd()
     {
         //Entry Postions for the Enemies which will come fromm the right
-        PosRight.Add(new Vector3(5.7f, 0.3f, 0));
-        PosRight.Add(new Vector3(5.7f, 1f, 0));
-        PosRight.Add(new Vector3(5.7f, 1.7f, 0));
+        PosRight.Add(new Vector3(5.7f, 0.3f, z));
+        PosRight.Add(new Vector3(5.7f, 1f, z));
+        PosRight.Add(new Vector3(5.7f, 1.7f, z));
     }
 }
