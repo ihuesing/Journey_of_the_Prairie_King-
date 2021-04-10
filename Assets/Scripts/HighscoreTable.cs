@@ -8,18 +8,18 @@ using UnityEngine;
 public class HighscoreTable : MonoBehaviour
 {
     [SerializeField] 
-    private Transform _entryContainer;
+    private Transform entryContainer;
 
     [SerializeField] 
     private Transform _entryTemplate;
 
     [SerializeField] 
-    private List<Transform> _highscoreEntryTransformList;
+    private List<Transform> highscoreEntryTransformList;
     
     private int _jsonCounter;
 
     //[SerializeField]
-    //private List<HighscoreEntry> _highscoreEntryList;
+    //private List<HighscoreEntry> highscoreEntryList;
     
     
     // Start is called before the first frame update
@@ -28,20 +28,11 @@ public class HighscoreTable : MonoBehaviour
         // initially everything is inactive
         this.gameObject.SetActive(false);
         _entryTemplate.gameObject.SetActive(false);
-         
-        /*
-        _highscoreEntryList = new List<HighscoreEntry>() { };
-        string json = JsonUtility.ToJson(_highscoreEntryList);
-        PlayerPrefs.SetString("highscoreTable", json);
-        PlayerPrefs.Save();
-        */
     }
     
     // gets called when player dies
-    public IEnumerator MakeScoreboard (int score)
+    public void MakeScoreboard (int score)
     {
-        yield return new WaitForSeconds(5);
-        
         // make leaderboard appear
         this.gameObject.SetActive(true);
 
@@ -67,10 +58,10 @@ public class HighscoreTable : MonoBehaviour
         }
         
         // create the actual entry for the leaderboard
-        _highscoreEntryTransformList = new List<Transform>();
+        highscoreEntryTransformList = new List<Transform>();
         foreach (HighscoreEntry highscoreEntry in highscores.highscoreEntryList)
         {
-            CreateHighscoreEntry(highscoreEntry, _entryContainer, _highscoreEntryTransformList);
+            CreateHighscoreEntry(highscoreEntry, entryContainer, highscoreEntryTransformList);
         }
     }
 
@@ -124,7 +115,14 @@ public class HighscoreTable : MonoBehaviour
         Highscores highscores = JsonUtility.FromJson<Highscores>(jsonString);
         
         _jsonCounter = highscores.highscoreEntryList.Count;
-
+        
+        // remove all previously stored entries from storage list
+        // if over 30 entries in list
+        if (_jsonCounter > 30)
+        {
+            highscores.highscoreEntryList = new List<HighscoreEntry>() { };
+        }
+        
         // make new highscore entry and add to storage list
         HighscoreEntry highscoreEntry = new HighscoreEntry {score = score, number = highscores.highscoreEntryList.Count + 1};
         highscores.highscoreEntryList.Add(highscoreEntry);
@@ -138,6 +136,13 @@ public class HighscoreTable : MonoBehaviour
         PlayerPrefs.Save();
     }
     
+    // reset storage list 
+    // remove all the scores so far
+    private void ResetScores()
+    {
+        
+    }
+
     // class for storage list with all the highscores 
     private class Highscores
     {

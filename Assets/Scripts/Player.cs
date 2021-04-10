@@ -142,7 +142,6 @@ public class Player : MonoBehaviour
             _bullet._shootingDirection = new Vector3(horizontalShootInput, verticalShootInput, 0f);
             Instantiate(_bulletPrefab, transform.position, Quaternion.identity);
             
-            // if the shotgun power up is active, 2 additional bullets will be instantiated with different angles
             if (_shotgun)
             {
                 Instantiate(_bulletPrefab, transform.position, Quaternion.AngleAxis(30, Vector3.forward));
@@ -164,7 +163,7 @@ public class Player : MonoBehaviour
     
     public void Damage()
     {
-        //if an Enemy hits the Player, the Player will lose a live
+        //if an Enemie hits the Player, the Player will lose a live
         _uiManager.AddLife(-1);
 
         //if the Player has no lives left the Player and the remaining Enemies will be destroyed
@@ -177,9 +176,9 @@ public class Player : MonoBehaviour
                 Destroy(child.gameObject);
             }
             Destroy(this.gameObject);
-            _uiManager.StartCoroutine(_uiManager.GameOver());
+            StartCoroutine(_uiManager.GameOver());
 
-            _uiManager.StartCoroutine(_highscoreTable.MakeScoreboard(score));
+            _highscoreTable.MakeScoreboard(score);
         }
     }
     
@@ -204,13 +203,14 @@ public class Player : MonoBehaviour
     
     void OnTriggerEnter(Collider other)
     {
-        // depending on the power up type, the corresponding functions will be executed and the power ups destroyed
+       
         string type = other.tag;
         
         switch (type)
         {
             case "Coin":
                 RelayScore(1);
+                //coins++;
                 Destroy(other.gameObject);
                 break;
             
@@ -261,28 +261,28 @@ public class Player : MonoBehaviour
     void TransitionInBounds()
     {
         //Player is not allowed to leave the screen through either ot these sides
-        if (transform.position.y < -4.3f)
+        if (transform.position.y < -5.2f)
         {
-            transform.position = new Vector3(transform.position.x, -4.3f, 0f);
+            transform.position = new Vector3(transform.position.x, -5.2f, 0f);
         }      
-        else if (transform.position.y > 6.3f)
+        else if (transform.position.y > 6f)
         {
-            transform.position = new Vector3(transform.position.x, 6.3f, 0f);
+            transform.position = new Vector3(transform.position.x, 6f, 0f);
         }
 
-        else if (transform.position.x > 5.3f)
+        else if (transform.position.x > 10f)
         {
-            transform.position = new Vector3(5.3f, transform.position.y, 0f);
+            transform.position = new Vector3(10f, transform.position.y, 0f);
         }
-        else if (transform.position.x < -5.3f)
+        else if (transform.position.x < -10f)
         {
-            transform.position = new Vector3(-5.3f, transform.position.y, 0f);
+            transform.position = new Vector3(-10f, transform.position.y, 0f);
         }
     }
     void TransitionNextLevel()
     {
         //dependent on the amount of destroyed Enemies, the player is allowed to leave the bottom screen if the next level is activated
-        if (nextLevel == true && transform.position.y < -4.3f && transform.position.x < 1.5f && transform.position.x > -1.5f)
+        if (nextLevel == true && transform.position.y < -5.2f && transform.position.x < 1.5f && transform.position.x > -1.5f)
         {
             //if the Player transition into the next level, the next level will be set as true and points are added to the next score
             if (level_0 == true)
@@ -305,7 +305,7 @@ public class Player : MonoBehaviour
             }
             //the arrow disappears again
             _arrow.SetActive(false);
-            transform.position = new Vector3(transform.position.x, 6.3f, 0f);
+            transform.position = new Vector3(transform.position.x, 6, 0f);
             //the player cannot move on to the next level without finishing the current one
             nextLevel = false;
             _theGo = false;

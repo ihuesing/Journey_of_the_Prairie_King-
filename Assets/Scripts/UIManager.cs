@@ -12,6 +12,8 @@ public class UIManager : MonoBehaviour
     
     public static int lives = 3;
 
+    [SerializeField]
+    private TextMeshProUGUI _coinText;
     
     [SerializeField]
     private TextMeshProUGUI _lifeText;
@@ -31,11 +33,12 @@ public class UIManager : MonoBehaviour
 
     private void Start()
     {
-        
+            
+        _coinText.text = "Coins:" + _coins;
         _lifeText.text = "Lives:" + lives;
         _scoreText.text = "Score:" + _score;
         _gameOverText.text = " ";
-        //At the beginning of the scene every Element of the WinnerTextList will be set as inactive
+        //At the begining of the scene every Element of the WinnerTextList will be set as inactive
         foreach(Text winnerText in WinnerTextList)
         {
             winnerText.gameObject.SetActive(false);
@@ -51,11 +54,13 @@ public class UIManager : MonoBehaviour
     public void AddCoins(int coins)
     {
         _coins = _coins + coins;
+        _coinText.text = "Coins:" + _coins;
     }
 
     public void AddLife(int life)
     {
         lives = lives + life;
+    
         _lifeText.text = "Lives:" + lives;
     }
     

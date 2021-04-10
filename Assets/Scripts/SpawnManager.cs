@@ -109,29 +109,29 @@ public class SpawnManager : MonoBehaviour
     private void PosBottomAdd()
     {
         //Entry Postions for the Enemies which will come fromm the bottom
-        PosBottom.Add(new Vector3(0.8f, -4.7f, 0f));
-        PosBottom.Add(new Vector3(0f, -4.7f, 0f));
-        PosBottom.Add(new Vector3(-0.8f, -4.7f, 0f));
+        PosBottom.Add(new Vector3(0.8f, -5.2f, 0f));
+        PosBottom.Add(new Vector3(0f, -5.2f, 0f));
+        PosBottom.Add(new Vector3(-0.8f, -5.2f, 0f));
     }
     private void PosTopAdd()
     {
         //Entry Postions for the Enemies which will come fromm the top
-        PosTop.Add(new Vector3(0.7f, 6.7f, 0));
-        PosTop.Add(new Vector3(0f, 6.7f, 0));
-        PosTop.Add(new Vector3(-0.7f, 6.7f, 0));
+        PosTop.Add(new Vector3(0.7f, 6f, 0));
+        PosTop.Add(new Vector3(0f, 6f, 0));
+        PosTop.Add(new Vector3(-0.7f, 6f, 0));
     }
     private void PosLeftAdd()
     {
         //Entry Postions for the Enemies which will come fromm the left
-        PosLeft.Add(new Vector3(-5.7f, 0.3f, 0));
-        PosLeft.Add(new Vector3(-5.7f, 1f, 0));
-        PosLeft.Add(new Vector3(-5.7f, 1.7f, 0));
+        PosLeft.Add(new Vector3(-10, 0.3f, 0));
+        PosLeft.Add(new Vector3(-10, 1f, 0));
+        PosLeft.Add(new Vector3(-10, 1.7f, 0));
     }
     private void PosRightAdd()
     {
         //Entry Postions for the Enemies which will come fromm the right
-        PosRight.Add(new Vector3(5.7f, 0.3f, 0));
-        PosRight.Add(new Vector3(5.7f, 1f, 0));
-        PosRight.Add(new Vector3(5.7f, 1.7f, 0));
+        PosRight.Add(new Vector3(10, 0.3f, 0));
+        PosRight.Add(new Vector3(10, 1f, 0));
+        PosRight.Add(new Vector3(10, 1.7f, 0));
     }
 }
