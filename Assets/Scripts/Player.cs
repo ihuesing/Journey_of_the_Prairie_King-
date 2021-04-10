@@ -8,8 +8,11 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _bulletPrefab;
 
+    private GameObject _wallHit;
+    
     [SerializeField]
-    private GameObject _wall;
+    private GameObject _arrow;
+    private GameObject clone;
 
     [SerializeField]
     private Bullets _bullet;
@@ -17,6 +20,9 @@ public class Player : MonoBehaviour
     //access to all the needed classes
     [SerializeField]
     private SpawnManager _spawnmanager;
+
+    [SerializeField]
+    private WallManager _wallManager;
 
     //needed variables
     //speed of the Player
@@ -36,18 +42,43 @@ public class Player : MonoBehaviour
 
     //int to count all the destroyed Enemies
     public int _enemiesCount;
+
+    //bool to to see in which level the player is
+    public bool _level_0 = true;
+    public bool _level_1 = false;
+    public bool _level_2 = false;
+    public bool _level_3 = false;
+    public bool _nextLevel = false;
+
+    //bool to controll the collision between Player and Wall
+    private bool _hitWall = false;
     
     // Start is called before the first frame update
     void Start()
     {
         transform.position = new Vector3(0, 0, 0);
+        //the Arrow is only active when the next Level is activated
+;       _arrow.SetActive(false);
     }
 
     // Update is called once per frame
     void Update()
     {
-        PlayerMovement();
+        if(_hitWall)
+        {
+            //The Player moves away from the wall when he hits it
+            transform.position = Vector3.MoveTowards(transform.position, _wallHit.gameObject.transform.position, -2f * Time.deltaTime);
+        } 
+        else
+        {
+            PlayerMovement();
+        }
         Shooting();
+        //if the next level is activated and all Enemies are destroyed, the Arrow gets activated
+        if (_spawnmanager.transform.childCount == 0 && _nextLevel == true)
+        {
+            _arrow.SetActive(true);
+        }
     }
 
     
@@ -60,43 +91,7 @@ public class Player : MonoBehaviour
         //Player moves depending on the pressed key
         transform.Translate(new Vector3(horizontalMoveInput, verticalMoveInput, 0f) * _speed * Time.deltaTime);
 
-        //if the player moves outside the screen
-        //dependent on the amount of destroyed Enemies, the player is not allowed to leave the screen
-        if (_enemiesCount < 10)
-        {
-            if (transform.position.y < -5.2f)
-            {
-                transform.position = new Vector3(transform.position.x, -5.2f, 0f);
-            }
-        }
-        // if the amount exceeds a specific limit the Player is allowed to move to the next level
-        else
-        {
-            // if the Player moves to the bottom of the screen he will end up at the top of the "new" level
-            if (transform.position.y < -5.2f)
-            {
-                transform.position = new Vector3(transform.position.x, 6, 0f);
-                //The walls for the new level will be instantiated
-                StartCoroutine(Wall());
-                // the int to count the destroyed Enemies will be reseted
-                Reset();
-            }
-        }
-        //Player is not allowed to leave the screen through either ot these sides        
-        if (transform.position.y > 6f)
-        {
-            transform.position = new Vector3(transform.position.x, 6f, 0f);
-        }
-        
-        else if (transform.position.x > 10f)
-        {
-            transform.position = new Vector3(10f, transform.position.y, 0f);
-        }
-        else if (transform.position.x < -10f)
-        {
-            transform.position = new Vector3(-10f, transform.position.y, 0f);
-        }
-
+        TransitionNextLevel();
     }
     private void Reset()
     {
@@ -125,10 +120,7 @@ public class Player : MonoBehaviour
         //counts the Enemies the Player has destroyed
         _enemiesCount++;
         //if the count exceeds a given limit the spawning of new Enemies will be stopped
-        if(_enemiesCount > 10)
-        {
-            _spawnmanager.StopSpawning();
-        }
+        NextLevel();
     }
     public void Damage()
     {
@@ -139,8 +131,7 @@ public class Player : MonoBehaviour
         if (_lives == 0)
         {
             //the spawning of new Enemies will be stopped
-            if (_enemiesCount > 10)
-                _spawnmanager.StopSpawning();
+            _spawnmanager.StopSpawning();
             foreach (Transform child in _spawnmanager.transform)
             {
                 Destroy(child.gameObject);
@@ -159,38 +150,95 @@ public class Player : MonoBehaviour
             //returns total amount of coins the Player has collected
             Debug.Log(coins);
         }
-        //if the Player hits a Wall the Trigger of the Player is set to false so it cannot move through the wall
+        //if the Player hits a Wall the bool _hitWall will become true so the player moves away from the wall
         else if (other.CompareTag("Wall"))
         {
-            GetComponent<Collider>().isTrigger = false;
+            _hitWall = true;
+            _wallHit = other.gameObject;
         }
     }
     private void OnTriggerExit(Collider other)
     {
-        //the Trigger is reset to true after the Player doesn't hit the wall anymore
+        //the bool is reset to falsw after the Player doesn't hit the wall anymore
         if (other.CompareTag("Wall"))
         {
-            GetComponent<Collider>().isTrigger = true;
+            _hitWall = false;
         }
     }
-    private IEnumerator Wall()
+    void TransitionInBounds()
     {
-        //all wall elements are instantiated at a fixed position
-        Instantiate(_wall, new Vector3(-4, -1f, 0), Quaternion.identity);
-        Instantiate(_wall, new Vector3(-4, -1.8f, 0), Quaternion.identity);
-        Instantiate(_wall, new Vector3(-3.2f, -1.8f, 0), Quaternion.identity);
-        Instantiate(_wall, new Vector3(-4, 3f, 0), Quaternion.identity);
-        Instantiate(_wall, new Vector3(-4, 3.8f, 0), Quaternion.identity);
-        Instantiate(_wall, new Vector3(-3.2f, 3.8f, 0), Quaternion.identity);
-        Instantiate(_wall, new Vector3(4, -1f, 0), Quaternion.identity);
-        Instantiate(_wall, new Vector3(4, -1.8f, 0), Quaternion.identity);
-        Instantiate(_wall, new Vector3(3.2f, -1.8f, 0), Quaternion.identity);
-        Instantiate(_wall, new Vector3(4, 3f, 0), Quaternion.identity);
-        Instantiate(_wall, new Vector3(4, 3.8f, 0), Quaternion.identity);
-        Instantiate(_wall, new Vector3(3.2f, 3.8f, 0), Quaternion.identity);
+        //Player is not allowed to leave the screen through either ot these sides
+        if (transform.position.y < -5.2f)
+        {
+            transform.position = new Vector3(transform.position.x, -5.2f, 0f);
+        }      
+        else if (transform.position.y > 6f)
+        {
+            transform.position = new Vector3(transform.position.x, 6f, 0f);
+        }
 
-        //waits a few seconds until new Enemies are spawned again
-        yield return new WaitForSeconds(1);
-        _spawnmanager.StartSpawning();
+        else if (transform.position.x > 10f)
+        {
+            transform.position = new Vector3(10f, transform.position.y, 0f);
+        }
+        else if (transform.position.x < -10f)
+        {
+            transform.position = new Vector3(-10f, transform.position.y, 0f);
+        }
+    }
+    void TransitionNextLevel()
+    {
+        //dependent on the amount of destroyed Enemies, the player is allowed to leave the bottom screen if the next level is activated
+        if (_nextLevel == true && transform.position.y < -5.2f && transform.position.x < 1.5f && transform.position.x > -1.5f)
+        {
+            //the arrow disappears again
+            _arrow.SetActive(false);
+            transform.position = new Vector3(transform.position.x, 6, 0f);
+            _nextLevel = false;
+            //The walls for the new level will be instantiated
+            _wallManager.DestroyWall();
+            StartCoroutine(_wallManager.Wall());
+            // the int to count the destroyed Enemies will be reseted
+            Reset();
+        }
+        else
+        {
+            TransitionInBounds();
+        }
+    }
+    void NextLevel()
+    {
+        switch (_enemiesCount)
+        {
+            //Switch case for each Level
+            //The player has to defeat more enemies in each level
+            case 10:
+                if(_level_0 == true)
+                {
+                    _spawnmanager.StopSpawning();
+                    _nextLevel = true;
+                    _level_0 = false;
+                    _level_1 = true;
+                }
+                break;
+            case 20:
+                if (_level_1 == true)
+                {
+                    _spawnmanager.StopSpawning();
+                    _nextLevel = true;
+                    _level_1 = false;
+                    _level_2 = true;
+                }
+                break;
+            case 30:
+                if (_level_2 == true)
+                {
+                    _spawnmanager.StopSpawning();
+                    _nextLevel = true;
+                    _level_2 = false;
+                    _level_3 = true;
+                }
+                break;
+        }
     }
 }

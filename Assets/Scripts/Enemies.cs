@@ -6,12 +6,23 @@ public class Enemies : MonoBehaviour
 {
     [SerializeField]
     private GameObject _coin;
+    
+    private GameObject _wallHit;
    
+    private bool _hitWall = false;
     // Update is called once per frame
     void Update()
     {
-        //Enemies will move towards the player
-        transform.position = Vector3.MoveTowards(transform.position, GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, 2f * Time.deltaTime);
+        if (_hitWall)
+        {
+            //Enemies will move away from the wall
+            transform.position = Vector3.MoveTowards(transform.position, _wallHit.gameObject.transform.position, -10f * Time.deltaTime);
+        }
+        else
+        {
+            //Enemies will move towards the player
+            transform.position = Vector3.MoveTowards(transform.position, GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, 2f * Time.deltaTime);
+        }
     }
     void OnTriggerEnter(Collider other)
     {
@@ -31,8 +42,22 @@ public class Enemies : MonoBehaviour
             //After destruction of an Enieme possible Power-Ips can be instantiated
             StartCoroutine(Power_Ups());
         }
+        //if Enemies "hit" a wall the bool will be activated to move away from the wall
+        else if (other.CompareTag("Wall"))
+        {
+            _hitWall = true;
+            _wallHit = other.gameObject;
+        }
     }
-    
+
+    void OnTriggerExit(Collider other)
+    {
+        //if Enemies don't "hit" the wall anymore, the enemies will move towards the player again
+        if (other.CompareTag("Wall"))
+        {
+            _hitWall = false;
+        }
+    }
     private IEnumerator Power_Ups()
     {
         //after each start a random number will be generated
@@ -45,5 +70,6 @@ public class Enemies : MonoBehaviour
         //else nothing happends
         yield return null;
     }
+    
 
 }
