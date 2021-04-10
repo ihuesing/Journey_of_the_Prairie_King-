@@ -17,24 +17,24 @@ public class WallManager : MonoBehaviour
     {
         if (_player.level_1 == true)
         {
-            //all wall elements are instantiated at a fixed position
-            Instantiate(_wall, new Vector3(-3, -1f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(-3, -1.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(-2.2f, -1.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(-3, 3f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(-3, 3.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(-2.2f, 3.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(3, -1f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(3, -1.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(2.2f, -1.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(3, 3f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(3, 3.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(2.2f, 3.8f, 0), Quaternion.identity, this.transform);
+            //all wall elements are instantiated at a fixed position for level 1
+            Instantiate(_wall, new Vector3(-3, -1.5f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(-3, -2.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(-2.2f, -2.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(-3, 2.5f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(-3, 3.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(-2.2f, 3.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(3, -1.5f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(3, -2.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(2.2f, -2.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(3, 2.5f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(3, 3.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(2.2f, 3.3f, 0), Quaternion.identity, this.transform);
 
         }
         else if (_player.level_2 == true)
         {
-            //all wall elements are instantiated at a fixed position
+            //all wall elements are instantiated at a fixed position for level 2
             Instantiate(_wall, new Vector3(-3, 1, 0), Quaternion.identity, this.transform);
             Instantiate(_wall, new Vector3(3, 1, 0), Quaternion.identity, this.transform);
             Instantiate(_wall, new Vector3(0, -1.75f, 0), Quaternion.identity, this.transform);
@@ -42,28 +42,29 @@ public class WallManager : MonoBehaviour
         }
         else if (_player.level_3 == true)
         {
-            //all wall elements are instantiated at a fixed position
-            Instantiate(_wall, new Vector3(-3, -0.2f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(-3, -1f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(-3, -1.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(-2.2f, -1.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(-1.4f, -1.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(-3, 2.2f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(-3, 3f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(-3, 3.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(-2.2f, 3.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(-1.4f, 3.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(3, -1f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(3, -0.2f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(3, -1.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(2.2f, -1.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(1.4f, -1.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(3, 2.2f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(3, 3f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(3, 3.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(2.2f, 3.8f, 0), Quaternion.identity, this.transform);
-            Instantiate(_wall, new Vector3(1.4f, 3.8f, 0), Quaternion.identity, this.transform);
+            //all wall elements are instantiated at a fixed position for level 3
+            Instantiate(_wall, new Vector3(-3, -0.7f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(-3, -1.5f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(-3, -2.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(-2.2f, -2.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(-1.4f, -2.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(-3, 1.8f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(-3, 2.5f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(-3, 3.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(-2.2f, 3.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(-1.4f, 3.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(3, -1.5f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(3, -0.7f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(3, -2.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(2.2f, -2.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(1.4f, -2.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(3, 1.8f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(3, 2.5f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(3, 3.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(2.2f, 3.3f, 0), Quaternion.identity, this.transform);
+            Instantiate(_wall, new Vector3(1.4f, 3.3f, 0), Quaternion.identity, this.transform);
         }
+        //every Power Up wil be destroyed when the player moves to the next level
         Player.DestroyPowerups("Coin");
         Player.DestroyPowerups("Bag");
         Player.DestroyPowerups("Coffee");

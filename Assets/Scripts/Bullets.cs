@@ -33,6 +33,11 @@ public class Bullets : MonoBehaviour
         {
             Destroy(this.gameObject);
         }
+        //If the bullet hits a bush, it will be destroyed
+        else if (other.CompareTag("Bush"))
+        {
+            Destroy(this.gameObject);
+        }
     }
     
 }

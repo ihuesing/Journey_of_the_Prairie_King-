@@ -61,10 +61,13 @@ public class SpawnManager : MonoBehaviour
                 case 1:
                     for (int i = 0; i < amount; i++)
                     {
+                        //The position is chosen randomly from one of the position of the given list
                         Vector3 Pos = PosRight[Random.Range(0, PosRight.Count)];
                         Instantiate(_enemiesPrefab, Pos, Quaternion.Euler(0, 178, 1.5f), this.transform);
+                        //The position is removed from list so it cannot be chosen twice
                         PosRight.Remove(Pos);
                     }
+                    //the list gets cleared and added again
                     PosRight.Clear();
                     PosRightAdd();
                     break;
@@ -72,10 +75,13 @@ public class SpawnManager : MonoBehaviour
                 case 2:
                     for (int i = 0; i < amount; i++)
                     {
+                        //The position is chosen randomly from one of the position of the given list
                         Vector3 Pos = PosTop[Random.Range(0, PosTop.Count)];
                         Instantiate(_enemiesPrefab, Pos, Quaternion.Euler(0, 178, 1.5f), this.transform);
+                        //The position is removed from list so it cannot be chosen twice
                         PosTop.Remove(Pos);
                     }
+                    //the list gets cleared and added again
                     PosTop.Clear();
                     PosTopAdd();
                     break;
@@ -83,10 +89,13 @@ public class SpawnManager : MonoBehaviour
                 case 3:
                     for (int i = 0; i < amount; i++)
                     {
+                        //The position is chosen randomly from one of the position of the given list
                         Vector3 Pos = PosLeft[Random.Range(0, PosLeft.Count)];
                         Instantiate(_enemiesPrefab, Pos, Quaternion.Euler(0, 178, 1.5f), this.transform);
+                        //The position is removed from list so it cannot be chosen twice
                         PosLeft.Remove(Pos);
                     }
+                    //the list gets cleared and added again
                     PosLeft.Clear();
                     PosLeftAdd();
                     break;
@@ -110,30 +119,30 @@ public class SpawnManager : MonoBehaviour
     }
     private void PosBottomAdd()
     {
-        //Entry Postions for the Enemies which will come fromm the bottom
-        PosBottom.Add(new Vector3(0.8f, -4.3f, z));
-        PosBottom.Add(new Vector3(0f, -4.3f, z));
-        PosBottom.Add(new Vector3(-0.8f, -4.3f, 7));
+        //Entry Postions for the Enemies which will come from the bottom
+        PosBottom.Add(new Vector3(-1f, -4.3f, z));
+        PosBottom.Add(new Vector3(-0.2f, -4.3f, z));
+        PosBottom.Add(new Vector3(0.6f, -4.3f, 7));
     }
     private void PosTopAdd()
     {
-        //Entry Postions for the Enemies which will come fromm the top
-        PosTop.Add(new Vector3(0.7f, 6.2f, z));
-        PosTop.Add(new Vector3(0f, 6.2f, z));
-        PosTop.Add(new Vector3(-0.7f, 6.2f, z));
+        //Entry Postions for the Enemies which will come from the top
+        PosTop.Add(new Vector3(-1f, 6.2f, z));
+        PosTop.Add(new Vector3(-0.2f, 6.2f, z));
+        PosTop.Add(new Vector3(0.6f, 6.2f, z));
     }
     private void PosLeftAdd()
     {
-        //Entry Postions for the Enemies which will come fromm the left
-        PosLeft.Add(new Vector3(-5.3f, 0.3f, z));
-        PosLeft.Add(new Vector3(-5.3f, 1f, z));
-        PosLeft.Add(new Vector3(-5.3f, 1.7f, z));
+        //Entry Postions for the Enemies which will come from the left
+        PosLeft.Add(new Vector3(-5.5f, -0.5f, z));
+        PosLeft.Add(new Vector3(-5.5f, 0.3f, z));
+        PosLeft.Add(new Vector3(-5.5f, 1.1f, z));
     }
     private void PosRightAdd()
     {
-        //Entry Postions for the Enemies which will come fromm the right
-        PosRight.Add(new Vector3(5.3f, 0.3f, z));
-        PosRight.Add(new Vector3(5.3f, 1f, z));
-        PosRight.Add(new Vector3(5.3f, 1.7f, z));
+        //Entry Postions for the Enemies which will come from the right
+        PosRight.Add(new Vector3(5.5f, 1.1f, z));
+        PosRight.Add(new Vector3(5.5f, 0.3f, z));
+        PosRight.Add(new Vector3(5.5f, -0.5f, z));
     }
 }

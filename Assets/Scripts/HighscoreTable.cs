@@ -12,14 +12,12 @@ public class HighscoreTable : MonoBehaviour
 
     [SerializeField] 
     private Transform _entryTemplate;
-
-    [SerializeField] 
+    
     private List<Transform> _highscoreEntryTransformList;
     
     private int _jsonCounter;
-
-    //[SerializeField]
-    //private List<HighscoreEntry> _highscoreEntryList;
+    
+    private List<HighscoreEntry> _highscoreEntryList;
     
     
     // Start is called before the first frame update
@@ -29,18 +27,19 @@ public class HighscoreTable : MonoBehaviour
         this.gameObject.SetActive(false);
         _entryTemplate.gameObject.SetActive(false);
          
-        /*
-        _highscoreEntryList = new List<HighscoreEntry>() { };
-        string json = JsonUtility.ToJson(_highscoreEntryList);
-        PlayerPrefs.SetString("highscoreTable", json);
-        PlayerPrefs.Save();
-        */
+        if (!PlayerPrefs.HasKey("highscoreTable"))
+        {
+            _highscoreEntryList = new List<HighscoreEntry>() { };
+            string json = JsonUtility.ToJson(_highscoreEntryList);
+            PlayerPrefs.SetString("highscoreTable", json);
+            PlayerPrefs.Save();
+        }
     }
     
     // gets called when player dies
     public IEnumerator MakeScoreboard (int score)
     {
-        yield return new WaitForSeconds(5);
+        yield return new WaitForSeconds(4);
         
         // make leaderboard appear
         this.gameObject.SetActive(true);

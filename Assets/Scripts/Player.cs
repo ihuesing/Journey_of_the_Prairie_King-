@@ -8,7 +8,7 @@ public class Player : MonoBehaviour
     [SerializeField]
     private GameObject _bulletPrefab;
 
-    private GameObject _wallHit;
+    private GameObject _unmovable_Object;
     
     [SerializeField]
     private GameObject _arrow;
@@ -25,7 +25,7 @@ public class Player : MonoBehaviour
     private WallManager _wallManager;
     
     [SerializeField]
-    private UIManager _uiManager;
+    private Sidebar _sidebar;
 
     //needed variables
     //speed of the Player
@@ -63,7 +63,7 @@ public class Player : MonoBehaviour
     private bool _theGo = false;
 
     //bool to control the collision between Player and Wall
-    private bool _hitWall = false;
+    private bool _unmovable_Object_Hit = false;
 
     [SerializeField] 
     private HighscoreTable _highscoreTable;
@@ -86,12 +86,12 @@ public class Player : MonoBehaviour
         if (nextLevel == true && level_3 == true)
         {
             transform.position = Vector3.MoveTowards(transform.position, new Vector3(0, 0, 0), 2 * Time.deltaTime);
-            _hitWall = false;
+            _unmovable_Object_Hit = false;
         }
-        else if (_hitWall)
+        else if (_unmovable_Object_Hit)
         {
             //The Player moves away from the wall when he hits it
-            transform.position = Vector3.MoveTowards(transform.position, _wallHit.gameObject.transform.position, -2f * Time.deltaTime);
+            transform.position = Vector3.MoveTowards(transform.position, _unmovable_Object.gameObject.transform.position, -3f * Time.deltaTime);
         }
         else
         {
@@ -114,7 +114,7 @@ public class Player : MonoBehaviour
         }
 
         // calculate the score
-        score = (enemiesCount * 20) + (_uiManager._coins * 10) + _nextLevelCount;
+        score = (enemiesCount * 20) + (_sidebar.coins * 10) + _nextLevelCount;
     }
 
     void PlayerMovement()
@@ -165,10 +165,10 @@ public class Player : MonoBehaviour
     public void Damage()
     {
         //if an Enemy hits the Player, the Player will lose a live
-        _uiManager.AddLife(-1);
+        _sidebar.AddLife(-1);
 
         //if the Player has no lives left the Player and the remaining Enemies will be destroyed
-        if (UIManager.lives < 0)
+        if (_sidebar.lives < 0)
         {
             //the spawning of new Enemies will be stopped
             _spawnmanager.StopSpawning();
@@ -177,9 +177,10 @@ public class Player : MonoBehaviour
                 Destroy(child.gameObject);
             }
             Destroy(this.gameObject);
-            _uiManager.StartCoroutine(_uiManager.GameOver());
+            _sidebar.StartCoroutine(_sidebar.GameOver());
 
-            _uiManager.StartCoroutine(_highscoreTable.MakeScoreboard(score));
+            _sidebar.StartCoroutine(_highscoreTable.MakeScoreboard(score));
+            _sidebar.StartCoroutine(_sidebar.RestartScene());
         }
     }
     
@@ -199,7 +200,7 @@ public class Player : MonoBehaviour
      
     public void RelayScore(int score)
     {
-        _uiManager.AddCoins(score);
+        _sidebar.AddCoins(score);
     }
     
     void OnTriggerEnter(Collider other)
@@ -225,7 +226,7 @@ public class Player : MonoBehaviour
                 break;
             
             case "Life":
-                _uiManager.AddLife(1);
+                _sidebar.AddLife(1);
                 Destroy(other.gameObject);
                 break;
             
@@ -245,8 +246,13 @@ public class Player : MonoBehaviour
                 break;
             
             case "Wall":
-                _hitWall = true;
-                _wallHit = other.gameObject;
+                _unmovable_Object_Hit = true;
+                _unmovable_Object = other.gameObject;
+                break;
+
+            case "Bush":
+                _unmovable_Object_Hit = true;
+                _unmovable_Object = other.gameObject;
                 break;
         }
     }
@@ -255,7 +261,12 @@ public class Player : MonoBehaviour
         //the bool is reset to false after the Player doesn't hit the wall anymore
         if (other.CompareTag("Wall"))
         {
-            _hitWall = false;
+            _unmovable_Object_Hit = false;
+        }
+        //the bool is reset to false after the Player doesn't hit the wall anymore
+        if (other.CompareTag("Bush"))
+        {
+            _unmovable_Object_Hit = false;
         }
     }
     void TransitionInBounds()
@@ -277,6 +288,11 @@ public class Player : MonoBehaviour
         else if (transform.position.x < -5.3f)
         {
             transform.position = new Vector3(-5.3f, transform.position.y, 0f);
+        }
+        //The player is not allowed to move on the z axis
+        else if (transform.position.z != 0)
+        {
+            transform.position = new Vector3(transform.position.x, transform.position.y, 0f);
         }
     }
 
@@ -366,9 +382,10 @@ public class Player : MonoBehaviour
     {
         //when the Player defeats all the Enemies in the last level, he has won
         _theGo = false;
-        StartCoroutine(_uiManager.WinnerText());
+        _sidebar.StartCoroutine(_sidebar.WinnerText());
         yield return new WaitForSeconds(4);
-        _highscoreTable.MakeScoreboard(score);
-        Destroy(this.gameObject);
+        Destroy(this.gameObject); 
+        _sidebar.StartCoroutine(_highscoreTable.MakeScoreboard(score));
+        _sidebar.StartCoroutine(_sidebar.RestartScene());
     }    
 }
