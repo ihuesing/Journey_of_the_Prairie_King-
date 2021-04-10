@@ -183,11 +183,11 @@ public class Player : MonoBehaviour
         }
     }
     
-    IEnumerator EnableSpeedBonus(int speed)
+    IEnumerator EnableSpeedBonus()
     {
-        _speed = speed;
+        Enemies.enemySpeed = Enemies.enemySpeed / 2;
         yield return new WaitForSeconds(10);
-        _speed = 7;
+        Enemies.enemySpeed = Enemies.enemySpeed * 2;
     }
     
     IEnumerator EnableShootBonus()
@@ -220,7 +220,7 @@ public class Player : MonoBehaviour
                 break;
             
             case "Coffee":
-                StartCoroutine(EnableSpeedBonus(12));
+                StartCoroutine(EnableSpeedBonus());
                 Destroy(other.gameObject);
                 break;
             
@@ -279,11 +279,26 @@ public class Player : MonoBehaviour
             transform.position = new Vector3(-5.3f, transform.position.y, 0f);
         }
     }
+
+    public static void DestroyPowerups(string tag)
+    {
+        
+            GameObject[] powerUp = GameObject. FindGameObjectsWithTag(tag);
+            for(int i=0; i< powerUp. Length; i++)
+            {
+                Destroy(powerUp[i]);
+            }
+        
+    }
+    
     void TransitionNextLevel()
     {
+        
         //dependent on the amount of destroyed Enemies, the player is allowed to leave the bottom screen if the next level is activated
         if (nextLevel == true && transform.position.y < -4.3f && transform.position.x < 1.5f && transform.position.x > -1.5f)
         {
+            
+            
             //if the Player transition into the next level, the next level will be set as true and points are added to the next score
             if (level_0 == true)
             {
@@ -303,6 +318,7 @@ public class Player : MonoBehaviour
                 level_3 = true;
                 _nextLevelCount += 50;
             }
+            
             //the arrow disappears again
             _arrow.SetActive(false);
             transform.position = new Vector3(transform.position.x, 6.3f, 0f);
@@ -314,6 +330,7 @@ public class Player : MonoBehaviour
             StartCoroutine(_wallManager.Wall());
             // the int to count the destroyed Enemies will be reseted
             _levelCount = 0;
+
         }
         else
         {

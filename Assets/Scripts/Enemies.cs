@@ -25,7 +25,7 @@ public class Enemies : MonoBehaviour
     private GameObject _wallHit;
 
     [SerializeField] 
-    private float _speed = 1f;
+    public static float enemySpeed = 1f;
 
     [SerializeField] 
     private int _powerUpTime = 7;
@@ -36,11 +36,11 @@ public class Enemies : MonoBehaviour
     {
 
         if (GameObject.Find("Player") != null || transform.position != Vector3.MoveTowards(transform.position,
-                GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, _speed * Time.deltaTime))
+                GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, enemySpeed * Time.deltaTime))
         {
             //Enemies will move towards and rotate the player
             transform.position = Vector3.MoveTowards(transform.position,
-                GameObject.FindWithTag("Player").GetComponent<Player>().transform.position + new Vector3(0,0,-0.6f), _speed * Time.deltaTime);
+                GameObject.FindWithTag("Player").GetComponent<Player>().transform.position + new Vector3(0,0,-0.6f), enemySpeed * Time.deltaTime);
         }
         if (transform.position.z > -0.6f)
         {

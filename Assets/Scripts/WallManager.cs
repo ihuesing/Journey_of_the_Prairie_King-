@@ -30,6 +30,7 @@ public class WallManager : MonoBehaviour
             Instantiate(_wall, new Vector3(3, 3f, 0), Quaternion.identity, this.transform);
             Instantiate(_wall, new Vector3(3, 3.8f, 0), Quaternion.identity, this.transform);
             Instantiate(_wall, new Vector3(2.2f, 3.8f, 0), Quaternion.identity, this.transform);
+
         }
         else if (_player.level_2 == true)
         {
@@ -63,7 +64,12 @@ public class WallManager : MonoBehaviour
             Instantiate(_wall, new Vector3(2.2f, 3.8f, 0), Quaternion.identity, this.transform);
             Instantiate(_wall, new Vector3(1.4f, 3.8f, 0), Quaternion.identity, this.transform);
         }
-
+        Player.DestroyPowerups("Coin");
+        Player.DestroyPowerups("Bag");
+        Player.DestroyPowerups("Coffee");
+        Player.DestroyPowerups("Life");
+        Player.DestroyPowerups("Shotgun");
+        Player.DestroyPowerups("Bomb");
 
         //waits a few seconds until new Enemies are spawned again
         yield return new WaitForSeconds(2);

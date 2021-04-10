@@ -1,0 +1,13 @@
+# Default ignored files
+/shelf/
+/workspace.xml
+# Rider ignored files
+/modules.xml
+/projectSettingsUpdater.xml
+/contentModel.xml
+/.idea.Kotp_2.0_Mesh.iml
+# Datasource local storage ignored files
+/../../../../../../../../../../../../../:\Users\akrau\OneDrive\Desktop\WiSe21\Unity\KotP_2.1_meshs_added\KotP_2.0_meshs_added\Kotp_2.0_Mesh\.idea\.idea.Kotp_2.0_Mesh\.idea/dataSources/
+/dataSources.local.xml
+# Editor-based HTTP Client requests
+/httpRequests/
