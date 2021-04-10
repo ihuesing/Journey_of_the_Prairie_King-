@@ -110,6 +110,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _coin: {fileID: 1007944715445146272, guid: ef2bf33f77c53c849957716abb51cf79, type: 3}
+  _bag: {fileID: 2835674107685121239, guid: dfcf8410f87469b438eb92506e70bb21, type: 3}
+  _coffee: {fileID: 7864622366377136436, guid: 4ba7b1a9c49018146afc41538dc44b07, type: 3}
+  _life: {fileID: 7526043325130066713, guid: 28e61341e7d845040baeac79000ef08f, type: 3}
+  _bomb: {fileID: 695370118254821763, guid: 08a4db7b1a5997445aa250671cd49cf3, type: 3}
+  _shotgun: {fileID: 2102737577223414105, guid: b0540c683dcad034886938e090802692, type: 3}
 --- !u!54 &-2538733963062492464
 Rigidbody:
   m_ObjectHideFlags: 0

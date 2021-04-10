@@ -23,6 +23,9 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     private WallManager _wallManager;
+    
+    [SerializeField]
+    private UIManager _uiManager;
 
     //needed variables
     //speed of the Player
@@ -30,18 +33,21 @@ public class Player : MonoBehaviour
     private float _speed = 7;
     
     //int to count all the lives of the Player
-    [SerializeField]
-    public int _lives = 4;
+    //[SerializeField]
+    //public int _lives = 4;
     
     [SerializeField]
     private float _shootingRate = 0.4f;
     private float _timeToShoot = 0;
 
     //int to count all the collected coins
-    private int coins = 0;
+    //private int coins = 0;
 
     //int to count all the destroyed Enemies
     public int _enemiesCount;
+    
+    // bool to control if shotgun is active
+    private bool _shotgun = false;
 
     //bool to to see in which level the player is
     public bool _level_0 = true;
@@ -50,7 +56,7 @@ public class Player : MonoBehaviour
     public bool _level_3 = false;
     public bool _nextLevel = false;
 
-    //bool to controll the collision between Player and Wall
+    //bool to control the collision between Player and Wall
     private bool _hitWall = false;
     
     // Start is called before the first frame update
@@ -111,6 +117,13 @@ public class Player : MonoBehaviour
             //access the script of the bullet and sets the vector for the direction of the movement to the direction of the presssed key
             _bullet._shootingDirection = new Vector3(horizontalShootInput, verticalShootInput, 0f);
             Instantiate(_bulletPrefab, transform.position, Quaternion.identity);
+            
+            if (_shotgun)
+            {
+                Instantiate(_bulletPrefab, transform.position, Quaternion.AngleAxis(30, Vector3.forward));
+                Instantiate(_bulletPrefab, transform.position, Quaternion.AngleAxis(30, Vector3.back));
+            }
+            
             _timeToShoot = Time.time + _shootingRate;
         }
 
@@ -125,10 +138,12 @@ public class Player : MonoBehaviour
     public void Damage()
     {
         //if an Enemie hits the Player, the Player will lose a live
-        _lives--;
+        _uiManager.AddLife(-1);
+        //_lives--;
+        
 
         //if the Player has no lives left the Player and the remaining Enemies will be destroyed
-        if (_lives == 0)
+        if (UIManager.lives < 0)
         {
             //the spawning of new Enemies will be stopped
             _spawnmanager.StopSpawning();
@@ -137,24 +152,84 @@ public class Player : MonoBehaviour
                 Destroy(child.gameObject);
             }
             Destroy(this.gameObject);
+            _uiManager.GameOver();
         }
 
     }
+    
+    IEnumerator EnableSpeedBonus(int speed)
+    {
+        _speed = speed;
+        yield return new WaitForSeconds(20);
+        _speed = 7;
+    }
+    
+    IEnumerator EnableShootBonus()
+    {
+        _shotgun = true;
+        yield return new WaitForSecondsRealtime(20);
+        _shotgun = false;
+    }
+    
+    void DestroyAllEnemies()
+    {
+        GameObject[] enemies = GameObject.FindGameObjectsWithTag ("Enemies");
+     
+        for (var i = 0 ; i < enemies.Length ; i ++)
+        {   
+            _enemiesCount++;
+            Destroy(enemies[i]);
+        }
+    }
+    
+
+    public void RelayScore(int score)
+    {
+        _uiManager.AddCoins(score);
+    }
+    
     void OnTriggerEnter(Collider other)
     {
-        //if the Player "hits" a coin, it will be "collected" 
-        if (other.CompareTag("Coin"))
+       
+        string type = other.tag;
+        
+        switch (type)
         {
-            coins++;
-            Destroy(other.gameObject);
-            //returns total amount of coins the Player has collected
-            Debug.Log(coins);
-        }
-        //if the Player hits a Wall the bool _hitWall will become true so the player moves away from the wall
-        else if (other.CompareTag("Wall"))
-        {
-            _hitWall = true;
-            _wallHit = other.gameObject;
+            case "Coin":
+                RelayScore(1);
+                //coins++;
+                Destroy(other.gameObject);
+                break;
+            
+            case "Bag":
+                RelayScore(5);
+                Destroy(other.gameObject);
+                break;
+            
+            case "Coffee":
+                StartCoroutine(EnableSpeedBonus(12));
+                Destroy(other.gameObject);
+                break;
+            
+            case "Life":
+                _uiManager.AddLife(1);
+                Destroy(other.gameObject);
+                break;
+            
+            case "Bomb":
+                DestroyAllEnemies();
+                Destroy(other.gameObject);
+                break;
+            
+            case "Shotgun":
+                StartCoroutine(EnableShootBonus());
+                Destroy(other.gameObject);
+                break;
+            
+            case "Wall":
+                _hitWall = true;
+                _wallHit = other.gameObject;
+                break;
         }
     }
     private void OnTriggerExit(Collider other)

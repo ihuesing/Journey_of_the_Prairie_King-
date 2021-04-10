@@ -7,6 +7,21 @@ public class Enemies : MonoBehaviour
     [SerializeField]
     private GameObject _coin;
     
+    [SerializeField]
+    private GameObject _bag;
+    
+    [SerializeField]
+    private GameObject _coffee;
+    
+    [SerializeField]
+    private GameObject _life;
+    
+    [SerializeField]
+    private GameObject _bomb;
+    
+    [SerializeField]
+    private GameObject _shotgun;
+    
     private GameObject _wallHit;
    
     private bool _hitWall = false;
@@ -20,9 +35,14 @@ public class Enemies : MonoBehaviour
         }
         else
         {
-            //Enemies will move towards the player
-            transform.position = Vector3.MoveTowards(transform.position, GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, 2f * Time.deltaTime);
+            if (GameObject.Find("Player") != null)
+            {
+                //Enemies will move towards the player
+                transform.position = Vector3.MoveTowards(transform.position,
+                    GameObject.FindWithTag("Player").GetComponent<Player>().transform.position, 2f * Time.deltaTime);
+            }
         }
+
     }
     void OnTriggerEnter(Collider other)
     {
@@ -61,13 +81,28 @@ public class Enemies : MonoBehaviour
     private IEnumerator Power_Ups()
     {
         //after each start a random number will be generated
-        int number = UnityEngine.Random.Range(0, 10);
+        int number = UnityEngine.Random.Range(0, 30);
         //if the number is a 6 or 7, a coin will be instantiated
-        if (number == 6 || number == 7)
+        if (number > 20)
         {
             Instantiate(_coin, transform.position, Quaternion.identity);
+        } else if (number == 8)
+        {
+            Instantiate(_bag, transform.position, Quaternion.identity);
+        } else if (number == 9)
+        {
+            Instantiate(_coffee, transform.position, Quaternion.identity);
+        } else if (number == 1)
+        {
+            Instantiate(_life, transform.position, Quaternion.identity);
+        } else if (number == 2)
+        {
+            Instantiate(_bomb, transform.position, Quaternion.identity);
+        } else if (number == 3)
+        {
+            Instantiate(_shotgun, transform.position, Quaternion.identity);
         }
-        //else nothing happends
+        //else nothing happens
         yield return null;
     }
     

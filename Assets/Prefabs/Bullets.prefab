@@ -113,7 +113,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: da907fb81330ffc4c9fe77bbc22371ce, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _shootingDirection: {x: 0, y: 1, z: 0}
+  _shootingDirection: {x: 1, y: 0, z: 0}
   _shootingSpeed: 7
 --- !u!114 &7760907250996610653
 MonoBehaviour:

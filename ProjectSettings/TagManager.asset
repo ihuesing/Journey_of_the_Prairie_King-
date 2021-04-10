@@ -9,6 +9,11 @@ TagManager:
   - SpawnManager
   - Wall
   - Bullet
+  - Bag
+  - Bomb
+  - Coffee
+  - Life
+  - Shotgun
   layers:
   - Default
   - TransparentFX
