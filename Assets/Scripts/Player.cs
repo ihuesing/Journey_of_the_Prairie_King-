@@ -17,6 +17,16 @@ public class Player : MonoBehaviour
     [SerializeField]
     private Bullets _bullet;
 
+    //access to soundeffects
+    public AudioSource pewSound;
+    public AudioSource coinPing;
+    public AudioSource bomb;
+    public AudioSource life;
+    public AudioSource damageSound;
+    public AudioSource levelUp;
+    public AudioSource winner;
+
+
     //access to all the needed classes
     [SerializeField]
     private SpawnManager _spawnmanager;
@@ -78,6 +88,14 @@ public class Player : MonoBehaviour
         transform.position = new Vector3(0, 0, 0);
         //the Arrow is only active when the next Level is activated
 ;       _arrow.SetActive(false);
+        
+        //sound-volumes
+        pewSound.volume = 1f;
+        coinPing.volume = 0.7f;
+        bomb.volume = 0.3f;
+        life.volume = 0.7f;
+        damageSound.volume = 0.7f;
+        levelUp.volume = 0.1f;
     }
 
     // Update is called once per frame
@@ -106,6 +124,8 @@ public class Player : MonoBehaviour
             if(level_3 == false)
             {
                 _arrow.SetActive(true);
+                levelUp.PlayOneShot(levelUp.clip);
+
             }
             else if(_theGo == true)
             {
@@ -149,6 +169,9 @@ public class Player : MonoBehaviour
                 Instantiate(_bulletPrefab, transform.position, Quaternion.AngleAxis(30, Vector3.back));
             }
             
+            //play "pew"-sound
+            pewSound.PlayOneShot(pewSound.clip);
+            
             _timeToShoot = Time.time + _shootingRate;
         }
 
@@ -166,6 +189,8 @@ public class Player : MonoBehaviour
     {
         //if an Enemy hits the Player, the Player will lose a live
         _sidebar.AddLife(-1);
+        damageSound.PlayOneShot(damageSound.clip);
+
 
         //if the Player has no lives left the Player and the remaining Enemies will be destroyed
         if (_sidebar.lives < 0)
@@ -213,11 +238,13 @@ public class Player : MonoBehaviour
             case "Coin":
                 RelayScore(1);
                 Destroy(other.gameObject);
+                coinPing.PlayOneShot(coinPing.clip);
                 break;
             
             case "Bag":
                 RelayScore(5);
                 Destroy(other.gameObject);
+                coinPing.PlayOneShot(coinPing.clip);
                 break;
             
             case "Coffee":
@@ -228,6 +255,7 @@ public class Player : MonoBehaviour
             case "Life":
                 _sidebar.AddLife(1);
                 Destroy(other.gameObject);
+                life.PlayOneShot(life.clip);
                 break;
             
             case "Bomb":
@@ -236,6 +264,7 @@ public class Player : MonoBehaviour
                     Destroy(child.gameObject);
                     enemiesCount++;
                     _levelCount++;
+                    bomb.PlayOneShot(bomb.clip);
                 }
                 Destroy(other.gameObject);
                 break;
@@ -382,6 +411,7 @@ public class Player : MonoBehaviour
     {
         //when the Player defeats all the Enemies in the last level, he has won
         _theGo = false;
+        winner.PlayOneShot(winner.clip);
         _sidebar.StartCoroutine(_sidebar.WinnerText());
         yield return new WaitForSeconds(4);
         Destroy(this.gameObject); 
